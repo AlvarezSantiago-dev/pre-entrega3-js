@@ -62,8 +62,8 @@ for (let i = 0; i < peliculas.length; i++) {
     const selecccombo = document.createElement("div");
     selecccombo.innerHTML = `
     <h2>Paso 5: Seleccione un Combo</h2>
-    <input type="radio" name="combo" value="MegaCombo"> MegaCombo: Balde palomitas + 2vasosGrandes + Golosina
-    <input type="radio" name="combo" value="ComboGrande"> ComboGrande: Balde palomitas + 2vasosGrandes
+    <input type="radio" name="combo" value="MegaCombo"> MegaCombo: Balde palomitas + 2vasosGrandes + Golosina<br>
+    <input type="radio" name="combo" value="ComboGrande"> ComboGrande: Balde palomitas + 2vasosGrandes<br>
     <input type="radio" name="combo" value="ComboChico"> ComboChico: Bolsa palomitas + 2vasosChicos`;
     contcombo.append(selecccombo);
 
