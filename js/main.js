@@ -1,12 +1,4 @@
-let valorEntradas = 1000; // variable global
-//Arrow functions, utilizar mas abajo
-const suma = (a, b,) => a + b;
-const resta = (a, b) => a - b;
-const iva = (x) => x * 0.21;
-const multiplica = (a, b) => a * b;
-const porcent = (x) => x * 0.3;
-
-//registro
+//Pude resolver puntos en los que me trabe con la ayuda de CoderAsk.
 const peliculas = [
     { id: 1, nombre: "Barbie", imagen: "../img/peliculabarbie.jpg" },
     { id: 2, nombre: "AlmaMula", imagen: "../img/peliculaalmamula.jpg" },
@@ -21,90 +13,99 @@ const peliculas = [
     { id: 11, nombre: "Elementos", imagen: "../img/peliculaselementos.jpg" },
     { id: 12, nombre: "Megalodon 2", imagen: "../img/peliculamegalodon2.jpg" },
 ];
-const diassemana = [
-    { id: 1, dia: "Lunes" },
-    { id: 2, dia: "Martes" },
-    { id: 3, dia: "Miercoles" },
-    { id: 4, dia: "Jueves" },
-    { id: 5, dia: "Viernes" },
-    { id: 6, dia: "Sabado" },
-    { id: 7, dia: "Domingo" },
-];
-//funcion para mostrar primer galeria
-function mostrarGaleria(item) {
-    const galeriapelis = document.createElement("div");
-    galeriapelis.innerHTML = `
-        <p>${item.nombre}</p>
-        <img src="${item.imagen}">
-        <button class="btn" id="boton${item.id}">Seleccionar</button>
-    `;
-    return galeriapelis;
-}
-//Funcion primer click
-function paso1(item) {
-// oculto mi galeria anterior
-    ocultargaleria();
-//Creo una const y div donde muestro la img de la peli y creo un form
-    const seleccpelicula = document.createElement("div");
-    seleccpelicula.innerHTML = `
-        <img src="${item.imagen}">
-        <form>
-            <label>La cantidad mínima es 1 entrada y la máxima es de 6.</label>
-            <input type="number" id="valorMultiplicar" name="quantity" min="1" max="6">
-            <button class="btn" id="paso2">Agregar al carrito</button>
-        </form>
-    `;
-//agrego en el body
-    document.body.append(seleccpelicula);
-//creo el boton para el siguiente paso
 
-}
-function mostrarDias(item){
-        const seleccdia = document.createElement("div");
-        seleccdia.innerHTML = `
-        <button class="btn" id="${item.id}">${item.dia}</button>`
-        return seleccdia;
-}
-function ocultargaleria() {
-    galeriapelis.style.display = "none";
-}
+//Traemos los contenedores a js
+const conthorario = document.getElementById(`containerhorario`);
+const contcombo = document.getElementById(`containercombos`);
+const maingaleria = document.getElementById('galeriapelis');
+const contdias = document.getElementById(`containerdias`);//DIAS
+const contentradas = document.getElementById(`containerentradas`);
 
-peliculas.forEach((item) => {
-    const div = mostrarGaleria(item);
-    galeriapelis.append(div);
+//Recorrido del array de peliculas.
+for (let i = 0; i < peliculas.length; i++) {
+    const divspelis = document.createElement("div");
+    divspelis.innerHTML = `
+    <img src="${peliculas[i].imagen}">
+    <button class="btn" id="${peliculas[i].id}">Elegir Peli</button>`;
+    maingaleria.append(divspelis);
+};
+//creamos la opcion de los dias
+    const seleccdia = document.createElement('div');
+    seleccdia.innerHTML = `
+    <h2>Paso 2: Seleccione un Día</h2>
+    <select id="dias">
+        <option value="Lunes">Lunes</option>
+        <option value="Martes">Martes</option>
+        <option value="Miércoles">Miércoles</option>
+        <option value="Jueves">Jueves</option>
+        <option value="Viernes">Viernes</option>
+    </select>`
+    contdias.append(seleccdia);
 
-    const btnpelis = document.getElementById(`boton${item.id}`);
-    btnpelis.addEventListener("click", () => {
-        paso1(item);
+//Creamos la opcion de las entradas
+    const seleccentradas = document.createElement("div");
+    seleccentradas.innerHTML =`
+    <h2>Paso 3: Seleccione la Cantidad de Entradas</h2>
+    <input type="number" id="cantidadEntradas" min="1" max="6" value="1"></input>`;
+    contentradas.append(seleccentradas);
+
+//Creamos la opcion del horario
+    const selecchorario = document.createElement("div");
+    selecchorario.innerHTML = `
+    <h2>Paso 4: Seleccione un Horario</h2>
+    <input type="radio" name="horario" value="18:00 PM"> 18:00 PM
+    <input type="radio" name="horario" value="20:00 PM"> 20:00 PM
+    <input type="radio" name="horario" value="22:00 PM"> 22:00 PM`;
+    conthorario.append(selecchorario);
+
+//Creamos la opcion de los combos
+    const selecccombo = document.createElement("div");
+    selecccombo.innerHTML = `
+    <h2>Paso 5: Seleccione un Combo</h2>
+    <input type="radio" name="combo" value="MegaCombo"> MegaCombo: Balde palomitas + 2vasosGrandes + Golosina
+    <input type="radio" name="combo" value="ComboGrande"> ComboGrande: Balde palomitas + 2vasosGrandes
+    <input type="radio" name="combo" value="ComboChico"> ComboChico: Bolsa palomitas + 2vasosChicos`;
+    contcombo.append(selecccombo);
+
+//Ayuda CoderAsk
+//Guardamos todos los datos en un obj vacio
+const datos = {};
+//Seleccionamos los inputs de name = combo para realizarle un forEach solo a ellos
+    const combos = document.querySelectorAll('input[name="combo"]');
+        combos.forEach((combo) => {
+            //al valor guardado le agregamos el evento change
+            combo.addEventListener("change", () => {
+                datos.combo = combo.value;
+            });
+        });
+
+//Creamos un bucle for para seleccionar una pelicula segun su id se guarda su nombre.
+        for(let i = 0; i < peliculas.length;i++){
+            document.getElementById(`${peliculas[i].id}`).addEventListener("click", () => {
+                datos.pelicula = `${peliculas[i].nombre}`;
+            });
+        }
+//Llamo al id dias para guardar su valor en datos.dia
+        document.getElementById("dias").addEventListener("change", () => {
+            datos.dia = document.getElementById("dias").value;
+        });
+//Llamo al id cantidad entradas y guardo su valor en datos.cantidadEntradas
+        document.getElementById("cantidadEntradas").addEventListener("input", () => {
+        datos.cantidadEntradas = parseInt(document.getElementById("cantidadEntradas").value);
     });
-});
 
-// Agregar un solo manejador de eventos para los botones de día de la semana
-const diasSemanaContainer = document.getElementById("diasSemanaContainer");
-diassemana.forEach((item) => {
-    const btnDia = mostrarDias(item);
-    btnDia.addEventListener("click", () => {
-        // Aquí puedes agregar la lógica para manejar el día seleccionado
-        console.log(`Se ha seleccionado el día: ${item.dia}`);
-    });
-    diasSemanaContainer.append(btnDia);
-});
-// Crear elementos de película y agregar eventos al hacer clic
-/*
-peliculas.forEach((item) => {
-    const div = mostrarGaleria(item);
-    galeriapelis.append(div);
 
-    const btnpelis = document.getElementById(`boton${item.id}`);
-    btnpelis.addEventListener("click", () => {
-        paso1(item);
-        //
+const horarios = document.querySelectorAll('input[name="horario"]');
+        horarios.forEach((horario) => {
+            horario.addEventListener("change", () => {
+                datos.horario = horario.value;
+            });
+        });
+
+//Llamo al boton confirmar para agregar el evento click
+                document.getElementById("confirmar").addEventListener("click", () => {
+// Almacenar los datos seleccionados en el localStorage
+                    localStorage.setItem("carrito", JSON.stringify(datos));
+                    alert("Datos confirmados y guardadados en el localStorage.");
+                });
         
-    const btnpelis2 = document.getElementById(`paso2`);
-    btnpelis2.addEventListener("click",() => {
-        mostrarDias(item);
-    })
-        
-    });
-});
-*/
